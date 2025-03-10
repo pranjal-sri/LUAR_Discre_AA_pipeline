@@ -1,0 +1,6 @@
+pretrained_weights/
+pretrained_models/
+__pycache__/
+*.pkl
+*.json
+*.html
