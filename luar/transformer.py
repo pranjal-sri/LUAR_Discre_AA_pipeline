@@ -45,7 +45,7 @@ class Transformer(nn.Module):
         modelname = transformer_modelnames[self.params.model_type]
 
         model_path = os.path.join(self.params.transformer_path, modelname)
-        self.transformer = AutoModel.from_pretrained(model_path)
+        self.transformer = AutoModel.from_pretrained("sentence-transformers/paraphrase-distilroberta-base-v1")
 
         self.hidden_size = self.transformer.config.hidden_size
         self.num_attention_heads = self.transformer.config.num_attention_heads
@@ -102,7 +102,6 @@ class Transformer(nn.Module):
         
         input_ids = rearrange(input_ids, 'b n e l -> (b n e) l')
         attention_mask = rearrange(attention_mask, 'b n e l -> (b n e) l')
-        
         outputs = self.transformer(
             input_ids=input_ids,
             attention_mask=attention_mask,

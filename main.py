@@ -22,7 +22,8 @@ def luar_embed(file_path, output_path):
     # Initialize model and tokenizer
     model = Transformer(params)
     change_attention_to_FlashAttention(model)
-    tokenizer = AutoTokenizer.from_pretrained('/local/nlp/pranjal-sri/dev/aa_hiatus/LUAR/pretrained_weights/paraphrase-distilroberta-base-v1')
+    #tokenizer = AutoTokenizer.from_pretrained('/local/nlp/pranjal-sri/dev/aa_hiatus/LUAR/pretrained_weights/paraphrase-distilroberta-base-v1')
+    tokenizer = AutoTokenizer.from_pretrained('sentence-transformers/paraphrase-distilroberta-base-v1')
     
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     model = model.to(device)
