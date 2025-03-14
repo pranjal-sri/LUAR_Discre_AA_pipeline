@@ -27,12 +27,14 @@ def get_embedding_for_text(text, tokenizer, model, device):
     tokenized_text = tokenizer(text_chunks, padding = "max_length", max_length = 32, truncation = True, return_tensors='pt')
     data_tensor = [tokenized_text['input_ids'], tokenized_text['attention_mask']]
 
-    data_tensor = [d.reshape(1, 1, -1, 32) for d in data_tensor]
+    data_tensor = [d.reshape(1, -1, 32) for d in data_tensor]
     data_tensor = [d.to(device = device) for d in data_tensor]
 
 
     with torch.no_grad():
-        episode_embedding, _ = model((data_tensor[0], data_tensor[1]))
+        episode_embedding = model(input_ids = data_tensor[0], attention_mask = data_tensor[1])
     episode_embedding = episode_embedding.squeeze()
     return episode_embedding.cpu().numpy()
+
+
 
