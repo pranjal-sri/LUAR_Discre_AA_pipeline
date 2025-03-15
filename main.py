@@ -3,7 +3,7 @@ from run_discre import get_discre_embedding
 from luar.utils import get_embedding_for_text
 from luar.transformer import Transformer
 from luar.model_utils import change_attention_to_FlashAttention
-from transformers import AutoTokenizer
+from transformers import AutoTokenizer, AutoModel
 from luar.default_params import params
 
 import pandas as pd
@@ -20,10 +20,8 @@ def discre_embed(file_path, output_path):
 
 def luar_embed(file_path, output_path):
     # Initialize model and tokenizer
-    model = Transformer(params)
-    change_attention_to_FlashAttention(model)
-    #tokenizer = AutoTokenizer.from_pretrained('/local/nlp/pranjal-sri/dev/aa_hiatus/LUAR/pretrained_weights/paraphrase-distilroberta-base-v1')
-    tokenizer = AutoTokenizer.from_pretrained('sentence-transformers/paraphrase-distilroberta-base-v1')
+    tokenizer = AutoTokenizer.from_pretrained("rrivera1849/LUAR-MUD", trust_remote_code=True)
+    model = AutoModel.from_pretrained("rrivera1849/LUAR-MUD", trust_remote_code=True)
     
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     model = model.to(device)
@@ -57,8 +55,9 @@ def embed(luar_embeddings_dict, discre_embeddings_dict):
     # Verify dictionaries have same keys
     assert set(luar_embeddings_dict.keys()) == set(discre_embeddings_dict.keys()), "Dictionaries must have same keys"
     
-    model = DeepEmbeddingModelAvg()
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    model = DeepEmbeddingModelAvg()
+    model.load_state_dict(torch.load("pretrained_models/linear_model.pt", weights_only=True))
     model = model.to(device)
     model.eval()
     

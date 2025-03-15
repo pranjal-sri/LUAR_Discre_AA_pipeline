@@ -59,7 +59,11 @@ def main():
     folder_url = "https://drive.google.com/drive/folders/1o8UUyqkR_YfN_PHKESMJKygBdNpOW_TR"
     download_folder_from_gdrive(folder_url)
 
-    download_sbert_weights()
+    file_id_for_linear_model = "1m9u_oxITq53PtAbAMEV5d0wnRdQ82A32"
+    output_path_for_linear_model = "pretrained_models/linear_model.pt"
+    download_file_from_gdrive(file_id_for_linear_model, output_path_for_linear_model)
+
+    # download_sbert_weights()
 
 if __name__ == "__main__":
     main()

@@ -59,15 +59,14 @@ class SIV_Discourse_Based_Model():
         return self.query_features, self.candidate_features, self.query_labels, self.candidate_labels
 
     def load_luar(self, params):
-        # Initialize model and tokenizer
-        model = Transformer(params)
-        change_attention_to_FlashAttention(model)
-        self.tokenizer = AutoTokenizer.from_pretrained('sentence-transformers/paraphrase-distilroberta-base-v1')
-        
-        self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-        self.luar_model = model.to(self.device)
-        self.luar_model.eval()
 
+        # Initialize model and tokenizer
+        self.tokenizer = AutoTokenizer.from_pretrained("rrivera1849/LUAR-MUD", trust_remote_code=True)
+        slef.luar_model = AutoModel.from_pretrained("rrivera1849/LUAR-MUD", trust_remote_code=True)
+        self.luar_model.eval()
+        self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+        self.luar_model = self.luar_model.to(self.device)
+        self.luar_model.eval()
         
         
     def load_model(self, params):
